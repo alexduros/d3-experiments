@@ -1,0 +1,38 @@
+{
+  "name": "d3-experiments",
+  "version": "1.0.0",
+  "description": "a set of d3js experiments for not-very-precise-aim",
+  "main": "index.js",
+  "scripts": {
+    "build": "./node_modules/webpack/bin/webpack.js",
+    "watch": "./node_modules/webpack/bin/webpack.js -w --progress",
+    "serve": "python -m SimpleHTTPServer 8081"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/alexduros/d3-experiments.git"
+  },
+  "keywords": [
+    "d3",
+    "javascript"
+  ],
+  "author": "Alexandre Duros <alexandre.duros@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alexduros/d3-experiments/issues"
+  },
+  "homepage": "https://github.com/alexduros/d3-experiments#readme",
+  "dependencies": {
+    "d3": "^4.4.1"
+  },
+  "devDependencies": {
+    "@types/d3": "^4.4.1",
+    "babel-core": "^6.22.1",
+    "babel-loader": "^6.2.10",
+    "babel-preset-env": "^1.1.8",
+    "ts-loader": "^1.3.1",
+    "tslint": "^4.3.1",
+    "typescript": "^2.1.5",
+    "webpack": "^1.14.0"
+  }
+}
