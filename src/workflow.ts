@@ -56,10 +56,10 @@ const project = (x, y) => {
 link.enter().append("path")
   .attr("class", "link")
   .attr("d", (d) =>
-      "M" + project(d.source.x, d.source.y)
-    + "C" + project(d.source.x, (d.source.y + d.target.y) / 2)
-    + " " + project(d.target.x, (d.source.y + d.target.y) / 2)
-    + " " + project(d.target.x, d.target.y);
+      "M" + d.source.x + "," + d.source.y
+    + "C" + d.source.x + "," + (d.source.y + d.target.y) / 2
+    + " " + d.target.x + "," + (d.source.y + d.target.y) / 2
+    + " " + d.target.x + "," + d.target.y;
   );
 
 circle.enter().append("circle")
