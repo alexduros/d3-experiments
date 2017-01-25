@@ -48,6 +48,11 @@ const link = svg.selectAll(".link")
 const circle = svg.selectAll(".node")
   .data(circles);
 
+const div = d3.select("body").append("div")
+    .attr("class", "tooltip")
+    .style("position", "absolute")
+    .style("z-index", "-1000");
+
 const project = (x, y) => {
   const angle = (x - 90) / 180 * Math.PI, radius = y;
   return [radius * Math.cos(angle), radius * Math.sin(angle)];
@@ -66,4 +71,15 @@ circle.enter().append("circle")
   .attr("class", "node")
   .attr("cx", function(d) { return d.x; })
   .attr("cy", function(d) { return d.y; })
-  .attr("r", radius);
+  .attr("r", radius)
+  .on("mouseover", (d) => {
+    div.style("opacity", 1);
+    div.html(`<p>${d.id}</p>`)
+       .style("left", (d3.event.target.getBoundingClientRect().left) + "px")
+       .style("top", (d3.event.target.getBoundingClientRect().top - 28) + "px");
+   })
+  .on("mouseout", (d) => {
+    div.transition()
+       .duration(500)
+       .style("opacity", 0);
+  });
