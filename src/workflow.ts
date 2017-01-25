@@ -48,12 +48,19 @@ const link = svg.selectAll(".link")
 const circle = svg.selectAll(".node")
   .data(circles);
 
-link.enter().append("line")
+const project = (x, y) => {
+  const angle = (x - 90) / 180 * Math.PI, radius = y;
+  return [radius * Math.cos(angle), radius * Math.sin(angle)];
+};
+
+link.enter().append("path")
   .attr("class", "link")
-  .attr("x1", function(d) { return d.source.x; })
-  .attr("y1", function(d) { return d.source.y; })
-  .attr("x2", function(d) { return d.target.x; })
-  .attr("y2", function(d) { return d.target.y; });
+  .attr("d", (d) =>
+      "M" + project(d.source.x, d.source.y)
+    + "C" + project(d.source.x, (d.source.y + d.target.y) / 2)
+    + " " + project(d.target.x, (d.source.y + d.target.y) / 2)
+    + " " + project(d.target.x, d.target.y);
+  );
 
 circle.enter().append("circle")
   .attr("class", "node")
