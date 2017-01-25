@@ -1,2 +1,2 @@
-import "./chart";
+import "./circles";
 

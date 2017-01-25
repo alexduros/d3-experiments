@@ -4,7 +4,6 @@
 var path = require('path');
 
 module.exports = {
-  cache: true,
   entry: {
     main: './src/index',
   },
