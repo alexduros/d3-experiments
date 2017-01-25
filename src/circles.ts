@@ -12,6 +12,8 @@ const circles = d3.range(20).map(function() {
   };
 });
 
+console.log(circles);
+
 const color = d3.scaleOrdinal()
   .range(d3.schemeCategory20);
 

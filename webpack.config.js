@@ -5,7 +5,8 @@ var path = require('path');
 
 module.exports = {
   entry: {
-    main: './src/index',
+    circles: './src/circles',
+    workflow: './src/workflow'
   },
   output: {
     path: path.resolve(__dirname, './dist'),
