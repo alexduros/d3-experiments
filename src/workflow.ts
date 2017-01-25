@@ -24,11 +24,21 @@ const circles = steps
   .reduce((a, b) => a.concat(b), []);
 
 const links = steps.reduce((a, b, i) => {
-   return a.concat((steps[i + 1] || []).map(t => ({
-     id: `${b[0].id}-to-${t.id}`,
-     source: b[0],
-     target: t
-   })));
+ const mainLine = (steps[i + 1] || []).map(t => ({
+   id: `${b[0].id}-to-${t.id}`,
+   source: b[0],
+   target: t
+ }));
+
+ const otherLines =  steps[i + 1] ? b.slice(1, b.length).map(s => ({
+   id: `${s.id}-to-${steps[i + 1][0].id}`,
+   source: s,
+   target: steps[i + 1][0]
+ })) : [];
+
+ return a
+   .concat(mainLine)
+   .concat(otherLines);
 }, []);
 
 const link = svg.selectAll(".link")
