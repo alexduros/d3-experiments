@@ -4,21 +4,26 @@ const svg = d3.select("svg"),
     width = +svg.attr("width"),
     height = +svg.attr("height"),
     radius = 10,
-    offset = 30;
+    offset = 30,
+    stepX  = width / 3;
 
 const worfklow = [
-  [{ id: "step#1.1" }],
-  [{ id: "step#2.1" }, { id: "step#2.2" }],
-  [{ id: "step#3.1" }, { id: "step#3.2" }, { id: "step#3.3" }],
-  [{ id: "step#1.1" }],
+  [{ id: "step#1.1", type: "node" }],
+  [{ id: "step#1.j", type: "join" }],
+  [{ id: "step#2.1", type: "node" }, { id: "step#2.2", type: "node" }],
+  [{ id: "step#2.j", type: "join" }],
+  [{ id: "step#3.1", type: "node" }, { id: "step#3.2", type: "node" }, { id: "step#3.3", type: "node" }],
+  [{ id: "step#3.j", type: "join" }],
+  [{ id: "step#4.1", type: "node" }],
 ];
 
 const steps = worfklow.map((s: Array<any>, i: number) =>
   s.map((t, j: number) => ({
     id: t.id,
-    x: (j * (width / s.length) + offset),
+    type: t.type,
+    x: (j * stepX + offset),
     y: (i * (height / worfklow.length) + offset)
-  }))
+  }));
 );
 
 const circles = steps
@@ -70,7 +75,7 @@ link.enter().append("path")
   );
 
 circle.enter().append("circle")
-  .attr("class", "node")
+  .attr("class", (d) => d.type)
   .attr("cx", function(d) { return d.x; })
   .attr("cy", function(d) { return d.y; })
   .attr("r", radius)
