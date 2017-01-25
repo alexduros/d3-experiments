@@ -10,36 +10,56 @@ const worfklow = [
   [{ id: "step#1.1" }],
   [{ id: "step#2.1" }, { id: "step#2.2" }],
   [{ id: "step#3.1" }, { id: "step#3.2" }, { id: "step#3.3" }],
-  [{ id: "step#1.1" }],
+  [{ id: "step#4.1" }],
 ];
 
 const steps = worfklow.map((s: Array<any>, i: number) =>
   s.map((t, j: number) => ({
     id: t.id,
+    class: "node",
+    radius,
     x: (j * (width / s.length) + offset),
     y: (i * (height / worfklow.length) + offset)
   }))
+  .concat([
+    {
+      id: `${s[0].id}-join`,
+      class: "join",
+      radius: 0,
+      x: 0 + offset,
+      y: (i * (height / worfklow.length) + offset + (height / (2 * worfklow.length)))
+    }
+  ])
 );
 
 const circles = steps
   .reduce((a, b) => a.concat(b), []);
 
 const links = steps.reduce((a, b, i) => {
- const mainLine = (steps[i + 1] || []).map(t => ({
-   id: `${b[0].id}-to-${t.id}`,
-   source: b[0],
-   target: t
- }));
+ const mainLine = steps[i + 1] ? [
+  {
+    id: `${b[0].id}-to-${steps[i + 1][0].id}`,
+    source: b[0],
+    target: steps[i + 1][0]
+  }
+ ] : [];
 
- const otherLines =  steps[i + 1] ? b.slice(1, b.length).map(s => ({
-   id: `${s.id}-to-${steps[i + 1][0].id}`,
-   source: s,
-   target: steps[i + 1][0]
+ const split = steps[i - 1] ? b.slice(1, b.length - 1).map(s => ({
+   id: `${steps[i - 1][steps[i - 1].length - 1].id}-to-${s.id}`,
+   source: steps[i - 1][steps[i - 1].length - 1],
+   target: s
  })) : [];
+
+ const merge =  b.slice(1, b.length - 1).map(s => ({
+   id: `${s.id}-to-${b[b.length - 1].id}`,
+   source: s,
+   target: b[b.length - 1]
+ }));
 
  return a
    .concat(mainLine)
-   .concat(otherLines);
+   .concat(split)
+   .concat(merge);
 }, []);
 
 const link = svg.selectAll(".link")
@@ -68,10 +88,10 @@ link.enter().append("path")
   );
 
 circle.enter().append("circle")
-  .attr("class", "node")
-  .attr("cx", function(d) { return d.x; })
-  .attr("cy", function(d) { return d.y; })
-  .attr("r", radius)
+  .attr("class", (d) => d.class)
+  .attr("cx",    (d) => d.x)
+  .attr("cy",    (d) => d.y)
+  .attr("r",     (d) => d.radius)
   .on("mouseover", (d) => {
     div.style("opacity", 1);
     div.html(`<p>${d.id}</p>`)
