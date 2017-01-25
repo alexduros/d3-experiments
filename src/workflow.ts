@@ -62,8 +62,10 @@ link.enter().append("path")
   .attr("class", "link")
   .attr("d", (d) =>
       "M" + d.source.x + "," + d.source.y
-    + "C" + d.source.x + "," + d.target.y
-    + " " + d.target.x + "," + d.source.y
+    + "C" + d.source.x + "," + (d.target.y + d.source.y) / 2
+    + " " + d.source.x + "," + (d.target.y + d.source.y) / 2
+    + " " + (d.target.x + d.source.x) / 2  + "," + (d.target.y + d.source.y) / 2
+    + "S" + d.target.x + "," + (d.target.y + d.source.y) / 2
     + " " + d.target.x + "," + d.target.y;
   );
 
