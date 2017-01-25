@@ -3,7 +3,8 @@ import * as d3 from "d3";
 const svg = d3.select("svg"),
     width = +svg.attr("width"),
     height = +svg.attr("height"),
-    radius = 10;
+    radius = 10,
+    offset = 30;
 
 const worfklow = [
   [{ id: "step#1.1" }],
@@ -15,8 +16,8 @@ const worfklow = [
 const steps = worfklow.map((s: Array<any>, i: number) =>
   s.map((t, j: number) => ({
     id: t.id,
-    x: (j * (width / s.length)),
-    y: (i * (height / worfklow.length))
+    x: (j * (width / s.length) + offset),
+    y: (i * (height / worfklow.length) + offset)
   }))
 );
 
