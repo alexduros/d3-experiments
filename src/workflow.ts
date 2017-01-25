@@ -54,9 +54,7 @@ const circle = svg.selectAll(".node")
   .data(circles);
 
 const div = d3.select("body").append("div")
-    .attr("class", "tooltip")
-    .style("position", "absolute")
-    .style("z-index", "-1000");
+  .attr("class", "tooltip");
 
 const project = (x, y) => {
   const angle = (x - 90) / 180 * Math.PI, radius = y;
@@ -76,17 +74,17 @@ link.enter().append("path")
 
 circle.enter().append("circle")
   .attr("class", (d) => d.type)
-  .attr("cx", function(d) { return d.x; })
-  .attr("cy", function(d) { return d.y; })
+  .attr("cx",    (d) => d.x)
+  .attr("cy",    (d) => d.y)
   .attr("r", radius)
   .on("mouseover", (d) => {
     div.style("opacity", 1);
     div.html(`<p>${d.id}</p>`)
-       .style("left", (d3.event.target.getBoundingClientRect().left) + "px")
-       .style("top", (d3.event.target.getBoundingClientRect().top - 28) + "px");
+       .style("left", (d3.event.target.getBoundingClientRect().left + 30) + "px")
+       .style("top", (d3.event.target.getBoundingClientRect().top - (radius / 2)) + "px");
    })
   .on("mouseout", (d) => {
     div.transition()
-       .duration(500)
-       .style("opacity", 0);
+      .duration(500)
+      .style("opacity", 0);
   });
