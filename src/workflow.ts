@@ -23,7 +23,7 @@ const steps = worfklow.map((s: Array<any>, i: number) =>
     type: t.type,
     x: (j * stepX + offset),
     y: (i * (height / worfklow.length) + offset)
-  }));
+  }))
 );
 
 const circles = steps
@@ -69,7 +69,7 @@ link.enter().append("path")
     + " " + d.source.x + "," + (d.target.y + d.source.y) / 2
     + " " + (d.target.x + d.source.x) / 2  + "," + (d.target.y + d.source.y) / 2
     + "S" + d.target.x + "," + (d.target.y + d.source.y) / 2
-    + " " + d.target.x + "," + d.target.y;
+    + " " + d.target.x + "," + d.target.y
   );
 
 circle.enter().append("circle")
