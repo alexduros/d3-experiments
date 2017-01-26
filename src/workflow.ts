@@ -3,24 +3,26 @@ import * as d3 from "d3";
 const svg = d3.select("svg"),
     width = +svg.attr("width"),
     height = +svg.attr("height"),
-    radius = 10,
+    area = svg.append("g"),
+    radius = 7,
     offset = 30,
-    stepX  = width / 3;
+    stepX  = width / 5;
 
 const worfklow = [
-  [{ id: "step#1.1", type: "node" }],
-  [{ id: "step#1.j", type: "join" }],
-  [{ id: "step#2.1", type: "node" }, { id: "step#2.2", type: "node" }],
-  [{ id: "step#2.j", type: "join" }],
-  [{ id: "step#3.1", type: "node" }, { id: "step#3.2", type: "node" }, { id: "step#3.3", type: "node" }],
-  [{ id: "step#3.j", type: "join" }],
-  [{ id: "step#4.1", type: "node" }],
+  [{ id: "step#1.1", type: "node", radius: 10 }],
+  [{ id: "step#1.j", type: "join", radius }],
+  [{ id: "step#2.1", type: "node", radius }, { id: "step#2.2", type: "node", radius }],
+  [{ id: "step#2.j", type: "join", radius }],
+  [{ id: "step#3.1", type: "node", radius }, { id: "step#3.2", type: "node", radius }, { id: "step#3.3", type: "node", radius }],
+  [{ id: "step#3.j", type: "join", radius }],
+  [{ id: "step#4.1", type: "node", radius: 10 }],
 ];
 
 const steps = worfklow.map((s: Array<any>, i: number) =>
   s.map((t, j: number) => ({
     id: t.id,
     type: t.type,
+    radius: t.radius,
     x: (j * stepX + offset),
     y: (i * (height / worfklow.length) + offset)
   }))
@@ -47,10 +49,10 @@ const links = steps.reduce((a, b, i) => {
    .concat(otherLines);
 }, []);
 
-const link = svg.selectAll(".link")
+const link = area.selectAll(".link")
   .data(links);
 
-const circle = svg.selectAll(".node")
+const circle = area.selectAll(".node")
   .data(circles);
 
 const div = d3.select("body").append("div")
@@ -76,7 +78,7 @@ circle.enter().append("circle")
   .attr("class", (d) => d.type)
   .attr("cx",    (d) => d.x)
   .attr("cy",    (d) => d.y)
-  .attr("r", radius)
+  .attr("r",     (d) => d.radius)
   .on("mouseover", (d) => {
     div.style("opacity", 1);
     div.html(`<p>${d.id}</p>`)
@@ -88,3 +90,14 @@ circle.enter().append("circle")
       .duration(500)
       .style("opacity", 0);
   });
+
+const zoomed = () => {
+  const { k, x, y } = d3.event.transform;
+  area.attr("transform", `translate(${x} ${y}) scale(${k})`);
+};
+
+const zoom = d3.zoom()
+  .scaleExtent([1, 10])
+  .on("zoom", zoomed);
+
+svg.call(zoom);
