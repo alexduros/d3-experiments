@@ -66,15 +66,17 @@ const links: Links = steps.reduce((a, b, i) => {
 }, [] as Links);
 
 const link = area.selectAll(".link")
-  .data(links);
+  .data(links)
+  .enter().append("path");
 
 const circle = area.selectAll(".node")
-  .data(circles);
+  .data(circles)
+  .enter().append("circle");
 
 const div = d3.select("body").append("div")
   .attr("class", "tooltip");
 
-link.enter().append("path")
+link
   .attr("class", "link")
   .attr("d", (d) =>
       "M" + d.source.x + "," + d.source.y
@@ -85,7 +87,7 @@ link.enter().append("path")
     + " " + d.target.x + "," + d.target.y
   );
 
-circle.enter().append("circle")
+circle
   .attr("class", (d: Node) => d.type)
   .attr("cx",    (d: Node) => d.x)
   .attr("cy",    (d: Node) => d.y)
@@ -112,3 +114,14 @@ const zoom = d3.zoom()
   .on("zoom", zoomed);
 
 svg.call(zoom);
+
+circle.transition()
+  .duration(1000)
+  .on("start", function repeat() {
+    d3.active(this)
+        .style("fill", "red")
+      .transition()
+        .style("fill", "blue")
+      .transition()
+        .on("start", repeat);
+   });
