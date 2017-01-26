@@ -10,10 +10,37 @@
       display: flex;
       justify-content: center;
     }
+    .node {
+      stroke: #000;
+      stroke-width: 0px;
+    }
+    .join {
+      stroke: #b0b0b0;
+      stroke-width: 0px;
+      fill: none;
+    }
+    .link {
+      fill: none;
+      stroke: #b0b0b0;
+      stroke-opacity: 1;
+      stroke-width: 15px;
+    }
+    .tooltip {
+      opacity: 0;
+      position: absolute;
+      text-align: center;
+      width: 60px;
+      padding: 2px;
+      font: 12px sans-serif;
+      background: lightsteelblue;
+      border: 0px;
+      border-radius: 8px;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body>
   <svg width="960" height="500"></svg>
-  <script src="dist/circles.js"></script>
+  <script src="/dist/workflow.js"></script>
 </body>
 </html>
