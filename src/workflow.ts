@@ -6,7 +6,8 @@ const svg = d3.select("svg"),
     radius = 7,
     offset = 30,
     area = svg.append("g").attr("transform", `translate(${offset} ${offset})`),
-    stepX  = width / 5;
+    stepX  = width / 5,
+    text = "Lorem ipsum dolor sit amet";
 
 type Link = {
   id: string,
@@ -69,9 +70,12 @@ const link = area.selectAll(".link")
   .data(links)
   .enter().append("path");
 
-const circle = area.selectAll(".node")
+const gSteps = area.selectAll(".node")
   .data(circles)
-  .enter().append("circle");
+  .enter().append("g");
+
+const circle = gSteps.append("circle");
+const label = gSteps.append("text");
 
 const div = d3.select("body").append("div")
   .attr("class", "tooltip");
@@ -96,13 +100,18 @@ circle
     div.style("opacity", 1);
     div.html(`<p>${d.id}</p>`)
        .style("left", (d3.event.target.getBoundingClientRect().left + 30) + "px")
-       .style("top", (d3.event.target.getBoundingClientRect().top - (radius / 2)) + "px");
+       .style("top", (d3.event.target.getBoundingClientRect().top + (radius / 2)) + "px");
    })
   .on("mouseout", (d: Node) => {
     div.transition()
       .duration(500)
       .style("opacity", 0);
   });
+
+label
+  .attr("dx", (d: Node) => d.x + 30)
+  .attr("dy", (d: Node) => d.y + radius / 2)
+  .text((d: Node) => `${d.id}: ${text}`);
 
 const zoomed = () => {
   const { k, x, y } = d3.event.transform;
